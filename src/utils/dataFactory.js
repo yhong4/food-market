@@ -40,4 +40,18 @@ export function productFactory(amount) {
     return products;
 }
 
+export function userFactory(amount) {
+    let users = []
+    for( let i = 0; i < amount; i++){
+        let user = {
+            firstName: faker.name.firstName(),
+            lastName: faker.name.lastName(),
+            email: faker.internet.email(),
+            password: "12345"
+        } 
+
+        users.push(user);
+    }
+    return users;
+}
 
