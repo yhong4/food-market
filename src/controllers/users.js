@@ -33,7 +33,7 @@ class UserAPI extends DataSource {
                 }
             })
 
-            return user ? user : 'no user';
+            return user ? "success" : 'no user';
         }else{
             return 'invalid';
         }
@@ -49,7 +49,7 @@ class UserAPI extends DataSource {
             }
 
             const result = insertDemoDate( db.User, [user] );
-            
+
             if(result) {
                 return 'success';
             }else{
