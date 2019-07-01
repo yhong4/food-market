@@ -1,13 +1,11 @@
-import { DataSource } from 'apollo-datasource';
-import isEmail from 'isemail';
+import isEmail from './node_modules/isemail';
 import db from '../models';
 
-import { userFactory } from '../utils/dataFactory';
-import { insertDemoDate } from '../utils/randomDataGenerator';
+import { userFactory } from '../helpers/dataFactory';
+import { insertDemoDate } from '../helpers/randomDataGenerator';
 
-class UserAPI extends DataSource {
+class UserAPI {
     constructor() {
-        super();
     }
 
     async findUser({ email }) {
@@ -68,3 +66,5 @@ class UserAPI extends DataSource {
         return true;
     }
 }
+
+export default new UserAPI();

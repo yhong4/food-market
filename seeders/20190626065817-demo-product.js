@@ -1,5 +1,5 @@
 'use strict';
-import productFactory from '../src/utils/dataFactory';
+import productFactory from '../src/helpers/dataFactory';
 
 
 module.exports = {
