@@ -1,15 +1,5 @@
 import * as faker from 'faker/locale/en_AU';
 
-// productcode: DataTypes.STRING,
-// productname: DataTypes.STRING,
-// productdescription: DataTypes.STRING,
-// salesprice: DataTypes.DOUBLE,
-// costprice: DataTypes.DOUBLE,
-// productimage: DataTypes.STRING,
-// creatAt: DataTypes.STRING,
-// updateAt: DataTypes.STRING
-
-
 const CODE_LENGTH = 20;
 
 export function generateFakerProductCode() {
@@ -24,9 +14,16 @@ export function generateFakerProductCode() {
 
 export function productFactory(amount) {
     let products = [];
+    let count = 0;
+    let category = faker.company.companyName();
 
     for(let i = 0; i < amount; i++) {
-        let product = {}
+        if(count > 50) {
+            count = 0;
+            category = faker.company.companyName();
+        }
+        let product = {};
+        product.productcompany = category
         product.productcode = generateFakerProductCode();
         product.productname = faker.lorem.word();
         product.productdescription = faker.lorem.paragraph();
@@ -35,7 +32,8 @@ export function productFactory(amount) {
         product.productimage = `${faker.image.food()}?random=${~~(Math.random()*10000)}`;
         product.creatAt = Date.now().toString();
         product.updateAt = Date.now().toString();
-        products.push(product)
+        products.push(product);
+        count += 1;
     }
     return products;
 }

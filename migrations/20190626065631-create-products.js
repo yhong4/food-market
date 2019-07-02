@@ -8,12 +8,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      productcompany: {
+        type: Sequelize.STRING
+      },
       productcode: {
         type: Sequelize.STRING
       },
       productname: {
         type: Sequelize.STRING
-        
       },
       productdescription: {
         type: Sequelize.STRING(2048)

@@ -9,8 +9,7 @@ class pageError {
     }
     
     errorPageResponseInProduction(req, res, next, err) {
-        res.status(err.status || 500);
-            res.json({
+        res.status(err.status || 500).json({
                 'error': {
                     message: err.message,
                     error: err
@@ -19,8 +18,7 @@ class pageError {
     }
     
     errorPageResponseInDevelopment(req, res, next, err) {
-        res.status(err.status || 500);
-            res.json({
+        res.status(err.status || 500).json({
                 'error': `${err.status}`
             })
     }

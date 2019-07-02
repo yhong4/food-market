@@ -1,60 +1,112 @@
-import isEmail from './node_modules/isemail';
+import isArray from 'lodash/isArray';
+import isEmail from 'isemail';
 import db from '../models';
-
-import { userFactory } from '../helpers/dataFactory';
-import { insertDemoDate } from '../helpers/randomDataGenerator';
+import stateCode from '../helpers/stateCode';
 
 class UserAPI {
     constructor() {
     }
 
-    async findUser({ email }) {
-        if(this.checkEmail(email)) {
-            const user = await db.Users.find({
+    async getAllUsers() {
+        try{
+            const users = await db.Users.findAll({
+                attributes: ['email', 'firstName', 'lastName']
+            })
+            return users;
+
+        }catch(err){
+            throw new Error(err)
+        }
+        
+    }
+
+    async findUserByEmail({ email }) {
+        try{
+            const user = await db.Users.findOne({
                 where: {
                     email:email,
                 }
             })
 
-            return user ? user : 'no user';
-        }else{
-            return 'invalid';
+            return user
+
+        }catch(err){
+            throw new Error(err)
+        }
+    }
+
+    async updateUserPasswordByEmail({ email, password }) {
+        try{
+            const result = await db.Users.update(
+                {
+                    password:password
+                },
+                {
+                    where: { email: email}
+                }
+            )
+
+            return result 
+
+        }catch(err){
+            throw new Error(err)
+        }
+    }
+
+    async deleteUserByEmail({ email }) {
+        try{
+            const result = await db.Users.destroy({
+                where: {
+                    email:email,
+                }
+            })
+
+            return result
+        }catch(err) {
+            throw new Error(err)
         }
     }
 
     async checkUserAuthentication({ email, password }) {
-        if(this.checkEmail(email)) {
-            const user = await db.Users.find({
+        try{
+            const user = await db.Users.findOne({
                 where: {
                     email:email,
                     password: password,
                 }
             })
 
-            return user ? "success" : 'no user';
-        }else{
-            return 'invalid';
+            return user;
+
+        }catch(err){
+            throw new Error(err)
         }
     }
 
     async signup({ email, password, firstname, lastname}) {
         if(this.checkEmail(email)) {
-            const user = {
-                firstName: firstname,
-                lastName: lastname,
-                email: email,
-                password: password,
-            }
+            try{
+                const result = await db.Users.findOrCreate({
+                    where: {email: email}, 
+                    defaults: {
+                        password: password,
+                        firstName: firstname,
+                        lastName: lastname
+                    }
+                });
 
-            const result = insertDemoDate( db.User, [user] );
+                let hasEmail = result[1];
 
-            if(result) {
-                return 'success';
-            }else{
-                return 'fail';
+                if(hasEmail) {
+                    return stateCode.Failure;
+                }else{
+                    return stateCode.Success;
+                }
+            }catch(err){
+                throw new Error(err)
             }
         }else{
-            return 'invalid';
+            return stateCode.Invalid;
         }
     }
 
